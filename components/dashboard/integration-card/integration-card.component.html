@@ -1,0 +1,66 @@
+<!-- components/dashboard/integration-card/integration-card.component.html -->
+<div class="integration-card" [class]="'status-' + integration.status">
+  <div class="card-header">
+    <div class="integration-icon">
+      <i [class]="getIntegrationIcon(integration.name)"></i>
+    </div>
+    <div class="integration-info">
+      <h4 class="integration-name">{{ integration.name }}</h4>
+      <span class="integration-type badge" [ngClass]="integration.type === 'erp' ? 'badge-erp' : 'badge-crm'">
+        {{ integration.type.toUpperCase() }}
+      </span>
+    </div>
+    <div class="status-indicator" [ngClass]="'status-' + integration.status">
+      <span class="status-dot"></span>
+      <span class="status-text">{{ integration.status | titlecase }}</span>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="integration-stats">
+      <div class="stat-item">
+        <span class="stat-label">Clientes</span>
+        <span class="stat-value">{{ integration.stats.clients }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Pedidos</span>
+        <span class="stat-value">{{ integration.stats.orders }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Notas</span>
+        <span class="stat-value">{{ integration.stats.invoices }}</span>
+      </div>
+    </div>
+
+    <div class="last-sync" *ngIf="integration.lastSync">
+      <small>Última sincronização: {{ integration.lastSync | date:'dd/MM/yyyy HH:mm' }}</small>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="action-buttons">
+      <button 
+        *ngIf="integration.status === 'disconnected'"
+        class="btn btn-success btn-sm"
+        (click)="onConnect()">
+        <i class="fas fa-plug"></i> Conectar
+      </button>
+      
+      <button 
+        *ngIf="integration.status === 'connected'"
+        class="btn btn-primary btn-sm"
+        (click)="onSync()"
+        [disabled]="integration.status === 'syncing'">
+        <i class="fas fa-sync-alt" [class.fa-spin]="integration.status === 'syncing'"></i>
+        Sincronizar
+      </button>
+      
+      <button 
+        *ngIf="integration.status === 'connected' || integration.status === 'error'"
+        class="btn btn-outline-danger btn-sm"
+        (click)="onDisconnect()">
+        <i class="fas fa-power-off"></i> Desconectar
+      </button>
+    </div>
+  </div>
+</div>
