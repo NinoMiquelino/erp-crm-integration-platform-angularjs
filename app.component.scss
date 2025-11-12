@@ -1,0 +1,14 @@
+// app.component.scss
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  
+  &.with-navbar {
+    margin-top: 60px; // Altura da navbar
+  }
+}
